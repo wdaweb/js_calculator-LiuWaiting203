@@ -69,9 +69,22 @@
       white-space: nowrap;
     }
 
+    p{
+      font-family: '微軟正黑體';
+      font-weight: bold;
+      font-size: 2rem;
+      color: white;
+      opacity: 0.2;
+
+      position: absolute;
+      top: 0;
+      left: 20px;
+    }
+
   </style>
 </head>
 <body>
+  <audio id="sound" src="sound.mp3"></audio>
   <table border="1" cellspacing="5" cellpadding="20">
 <tr >
   <td colspan="4" id="text" class="ellipsis">0</td>
@@ -105,16 +118,20 @@
 </tr>
   </table>
 
+  <p>有音效！請開喇叭聲音</p>
 
 <script>
   const text = document.getElementById('text')
   const btns = document.querySelectorAll('td:not(#text)')
+  const sound = document.getElementById('sound')
 
   for(const btn of btns) {
     btn.addEventListener('click', () => {
       const btnText = btn.innerText 
       const operators = ['+', '-', '*', '/', '.']
       const lastText = text.innerText[text.innerText.length - 1]
+      // 播放聲音
+      sound.play()
       // 如果按的鍵是 '='
       if (btnText === '=') {
         // 如果最後一個字不是運算子，才計算
