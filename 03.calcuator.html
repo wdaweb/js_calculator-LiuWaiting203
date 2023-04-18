@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <title>計算機</title>
+  <style>
+    body {
+      height: 100vh; 
+      background: url('https://i.ibb.co/GWYBtJK/wp6102298.jpg') no-repeat center/cover;
+      margin-top: 35px;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+
+    
+    table {
+      margin: auto;
+      background:linear-gradient(45deg, #e952f7, #60abf2);
+      border: 0px solid;
+      border-radius: 10px;
+      box-shadow: 4px 6px 10px 3px rgba(0,0,0,0.5);
+      table-layout: fixed;  
+      width: 350px;
+    }
+
+    td {
+      font-family: Arial, sans-serif;
+      border: 0px solid;
+      font-size: 40px;
+      font-weight: bold;
+      width: auto;
+      height: 40px;
+      text-align: center;
+      vertical-align: center;
+      color: white;
+      background: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    td:hover{
+      color: rgb(0, 0, 0);
+      background: white;
+      opacity: 0.3;
+    }
+
+    table tr:first-child>td{
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.5rem;
+      background: transparent;
+      text-align: right;
+      cursor: auto;
+    }
+
+    
+    table tr:first-child>td:hover{
+      opacity: 1;
+      color: white;
+    }
+
+    td.ellipsis{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+  </style>
+</head>
+<body>
+  <table border="1" cellspacing="5" cellpadding="20">
+<tr >
+  <td colspan="4" id="text" class="ellipsis">0</td>
+</tr>
+<tr>
+  <td>C</td>
+  <td>/</td>
+  <td>*</td>
+  <td>-</td>
+</tr>
+<tr>
+  <td>7</td>
+  <td>8</td>
+  <td>9</td>
+  <td rowspan="2">+</td>
+</tr>
+<tr>
+  <td>4</td>
+  <td>5</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td>1</td>
+  <td>2</td>
+  <td>3</td>
+  <td rowspan="2">=</td>
+</tr>
+<tr>
+  <td colspan="2">0</td>
+  <td>.</td>
+</tr>
+  </table>
+
+
+<script>
+  const text = document.getElementById('text')
+  const btns = document.querySelectorAll('td:not(#text)')
+
+  for(const btn of btns) {
+    btn.addEventListener('click', () => {
+      const btnText = btn.innerText 
+      const operators = ['+', '-', '*', '/', '.']
+      const lastText = text.innerText[text.innerText.length - 1]
+      // 如果按的鍵是 '='
+      if (btnText === '=') {
+        // 如果最後一個字不是運算子，才計算
+        if (!operators.includes(lastText)) {
+          text.innerText = eval(text.innerText) 
+        }
+      } 
+      // 如果按 C ， 歸 0
+      else if (btnText === 'C') {
+        text.innerText = '0'
+      } 
+      // 如果現在是 0 ， 按的是數字，把文字取代
+      else {
+        if (text.innerText === '0' && !isNaN(parseInt(btnText))){
+          text.innerText = btnText
+          // 如果最後一個字是運算子
+        } else if (operators.includes(lastText)) {
+          // 現在按的不是運算子，才加上去
+          if (!operators.includes(btnText)) {
+            text.innerText += btnText
+          }
+          // 如果最後一個字不是運算子，加上去
+        } else {
+          text.innerHTML += btnText
+        }
+      }
+    })
+  }
+
+  document.addEventListener('keydown', event => {
+    const btnText = event.key
+    const operators = ['+', '-', '*', '/']
+    const lastText = text.innerText[text.innerText.length - 1]
+      // 如果按的鍵是 '='
+      if (btnText === '=') {
+        // 如果最後一個字不是運算子，才計算
+        if (!operators.includes(lastText)) {
+          text.innerText = eval(text.innerText) 
+        }
+      } 
+      // 如果按 C ， 歸 0
+      else if (btnText === 'c') {
+        text.innerText = '0'
+      } 
+      // 如果現在是 0 ， 按的是數字，把文字取代
+      else {
+        if (text.innerText === '0' && !isNaN(parseInt(btnText))){
+          text.innerText = btnText
+          // 如果最後一個字是運算子
+        } else if (operators.includes(lastText)) {
+          // 現在按的不是運算子，才加上去
+          if (!operators.includes(btnText) && !isNaN(parseInt(btnText))) {
+            text.innerText += btnText
+          }
+          // 如果最後一個字不是運算子，加上去
+        } else if (!isNaN(parseInt(btnText)) || operators.includes(btnText)){
+          text.innerHTML += btnText
+        }
+        else if (btnText === '.') {
+          let canAddDot = true 
+          for (let i = text.innerText.length - 1; i >= 0; i--){
+            if (operators.includes(text.innerText[i])) break
+            if (text.innerText[i] === '.') {
+              canAddDot = false
+              break
+            }
+          }
+          if (canAddDot) text.innerText += '.'
+        }
+      }
+    })
+</script>
+</body>
+</html>
